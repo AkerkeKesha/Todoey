@@ -17,11 +17,7 @@ class CategoryViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let category = Category()
-//        category.name = "Shopping"
-        
-
+        loadCategories()
     }
     //MARK: - Table View DataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,6 +28,17 @@ class CategoryViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         cell.textLabel?.text = categoryArray[indexPath.row].name
         return cell
+    }
+    
+    //MARK: - Table View Delegate Methods
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationViewController = segue.destination as! TodoListViewController
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationViewController.selectedCategory = categoryArray[indexPath.row]
+        }
     }
     //MARK: - Data Manipulation Methods
     func saveCategories(){
@@ -73,8 +80,5 @@ class CategoryViewController: UITableViewController {
         
         
     }
-    
-    
-    //MARK: - Table View Delegate Methods
 
 }
